@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Voice-to-voice PoC
 
-## Getting Started
+Voice-to-voice prototype. The repository is organized by responsibility to keep the experiment easy to navigate:
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```text
+voice-to-voice-poc/
+├── client/              # Next.js web interface
+│   ├── app/             # Application pages, layout, and styles
+│   └── public/          # Static assets
+├── server/              # Reserved for server-side logic and APIs
+├── notes/               # R&D observations and decisions
+├── package.json         # Project commands
+└── pnpm-lock.yaml       # Locked dependency versions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js 20 or later
+- pnpm 11 (the expected version is specified in `package.json`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Installation
 
-## Learn More
+From the repository root:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Run the PoC in development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm dev
+```
 
-## Deploy on Vercel
+The client is available at [http://localhost:3000](http://localhost:3000).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The commands can also be run individually:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm lint      # Check the client code
+pnpm build     # Build the client for production
+pnpm start     # Start the production build
+```
+
+> The `server/` directory is ready for future backend endpoints and voice-processing logic. The application is currently a standalone Next.js client.
+
+## R&D notes
+
+Observations, hypotheses, and experiment results are collected in [`notes/`](./notes/). They should remain separate from runtime code.
