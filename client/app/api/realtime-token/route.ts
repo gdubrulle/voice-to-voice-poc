@@ -1,31 +1,14 @@
 import { NextResponse } from "next/server";
-
-const OPENAI_CLIENT_SECRETS_URL =
-  "https://api.openai.com/v1/realtime/client_secrets";
-const REALTIME_MODEL = "gpt-realtime-2.1";
+import { REALTIME_SESSION_CONFIG } from "../../../../server/realtime-config";
 
 type OpenAIClientSecretPayload = {
   value: string;
   expires_at: number;
 };
 
-function isOpenAIClientSecretPayload(
-  payload: unknown,
-): payload is OpenAIClientSecretPayload {
-  if (typeof payload !== "object" || payload === null) {
-    return false;
-  }
-
-  return (
-    "value" in payload &&
-    typeof payload.value === "string" &&
-    "expires_at" in payload &&
-    typeof payload.expires_at === "number"
-  );
-}
-
 export async function POST() {
   const apiKey = process.env.OPENAI_API_KEY;
+  const openAiUrlSecret = process.env.OPENAI_CLIENT_SECRETS_URL;
 
   if (!apiKey) {
     return NextResponse.json(
@@ -34,23 +17,22 @@ export async function POST() {
     );
   }
 
+  if (!openAiUrlSecret) {
+    return NextResponse.json(
+      { error: "OpenAI client secrets URL is not configured." },
+      { status: 503 },
+    );
+  }
+
   try {
-    const openAIResponse = await fetch(OPENAI_CLIENT_SECRETS_URL, {
+    const openAIResponse = await fetch(openAiUrlSecret, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        session: {
-          type: "realtime",
-          model: REALTIME_MODEL,
-          audio: {
-            input: {
-              turn_detection: null,
-            },
-          },
-        },
+        session: REALTIME_SESSION_CONFIG,
       }),
       cache: "no-store",
     });
@@ -66,17 +48,7 @@ export async function POST() {
       );
     }
 
-    const payload: unknown = await openAIResponse.json();
-
-    if (!isOpenAIClientSecretPayload(payload)) {
-      console.error(
-        "OpenAI returned an invalid Realtime client secret payload.",
-      );
-      return NextResponse.json(
-        { error: "Could not prepare a voice session. Please try again." },
-        { status: 502 },
-      );
-    }
+    const payload = (await openAIResponse.json()) as OpenAIClientSecretPayload;
 
     return NextResponse.json(
       {

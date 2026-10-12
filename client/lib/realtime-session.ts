@@ -1,8 +1,12 @@
 export type RealtimeServerEvent = {
   type: string;
+  event_id?: string;
   delta?: string;
   error?: {
+    type?: string;
+    code?: string;
     message?: string;
+    event_id?: string;
   };
   response?: {
     status?: string;
@@ -71,27 +75,4 @@ export function getMicrophoneErrorMessage(error: unknown): string {
   }
 
   return "Could not start a voice session. Check your connection and try again.";
-}
-
-type SessionResourceReferences = {
-  peerConnection: { current: RTCPeerConnection | null };
-  dataChannel: { current: RTCDataChannel | null };
-  microphoneStream: { current: MediaStream | null };
-  readyTimeout: { current: number | null };
-};
-
-export function closeRealtimeSession(resources: SessionResourceReferences) {
-  if (resources.readyTimeout.current !== null) {
-    window.clearTimeout(resources.readyTimeout.current);
-    resources.readyTimeout.current = null;
-  }
-
-  resources.microphoneStream.current
-    ?.getTracks()
-    .forEach((track) => track.stop());
-  resources.microphoneStream.current = null;
-  resources.dataChannel.current?.close();
-  resources.dataChannel.current = null;
-  resources.peerConnection.current?.close();
-  resources.peerConnection.current = null;
 }
