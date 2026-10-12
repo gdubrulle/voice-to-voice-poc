@@ -3,7 +3,7 @@ import { VoiceState, type VoiceStatePresentation } from "@/types/voice-state";
 const voiceStatePresentations: Record<VoiceState, VoiceStatePresentation> = {
   [VoiceState.Ready]: {
     status: "Ready when you are",
-    heading: "What’s on your mind?",
+    heading: "Start to talk",
     description: "Start a conversation, one thought at a time.",
     controlCaption: "Click to speak",
   },

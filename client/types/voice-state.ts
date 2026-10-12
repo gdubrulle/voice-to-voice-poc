@@ -10,7 +10,7 @@ export enum VoiceState {
 
 export type VoiceStatePresentation = {
   status: string;
-  heading: string;
-  description: string;
+  heading?: string;
+  description?: string;
   controlCaption: string;
 };

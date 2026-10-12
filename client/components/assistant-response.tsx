@@ -24,14 +24,10 @@ export function AssistantResponse({
     audioElement.srcObject = audioStream;
     audioElement.play().then(
       () => {
-        if (isCurrentStream) {
-          setPlaybackBlocked(false);
-        }
+        if (isCurrentStream) setPlaybackBlocked(false);
       },
       () => {
-        if (isCurrentStream) {
-          setPlaybackBlocked(true);
-        }
+        if (isCurrentStream) setPlaybackBlocked(true);
       },
     );
 
@@ -44,9 +40,7 @@ export function AssistantResponse({
 
   async function playResponse() {
     const audioElement = audioElementRef.current;
-    if (!audioElement) {
-      return;
-    }
+    if (!audioElement) return;
 
     try {
       await audioElement.play();
@@ -57,13 +51,21 @@ export function AssistantResponse({
   }
 
   return (
-    <section className="response" aria-label="Assistant response">
-      <h2 className="response-label">A response</h2>
-      <p aria-live="polite">{text}</p>
-      <audio className="assistant-audio" ref={audioElementRef} autoPlay />
+    <section
+      className="mt-11 w-full max-w-120 border-t border-[#e6edf3] pt-6 text-left sm:mt-14"
+      aria-label="Assistant response"
+    >
+      <h2 className="text-xs font-normal text-[#9aa9b9]">A response</h2>
+      <p
+        className="mt-3 text-[17px] leading-[1.7] tracking-[-0.015em] text-[#344d68]"
+        aria-live="polite"
+      >
+        {text}
+      </p>
+      <audio className="hidden" ref={audioElementRef} autoPlay />
       {playbackBlocked && (
         <button
-          className="text-button response-play-button"
+          className="mt-3.5 p-1 text-[13px] font-medium text-[#2865ad] hover:text-[#194e89] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#3978c56b]"
           type="button"
           onClick={playResponse}
         >

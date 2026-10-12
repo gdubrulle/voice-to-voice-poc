@@ -26,6 +26,15 @@ From the repository root:
 pnpm install
 ```
 
+## Configuration
+
+Create `client/.env.local` with your OpenAI key. `OPENAI_REALTIME_MODEL` is optional and defaults to `gpt-realtime-2.1`, which is listed in the [official OpenAI model catalog](https://platform.openai.com/docs/models) as a Realtime model.
+
+```bash
+OPENAI_API_KEY=your_api_key
+OPENAI_REALTIME_MODEL=gpt-realtime-2.1
+```
+
 ## Run the PoC in development
 
 ```bash
